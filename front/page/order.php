@@ -15,7 +15,7 @@ class Front_Page_Index extends Front_Page {
 	-------------------------------*/
 	protected $_title = 'Style and Beauty Hub';
 	protected $_class = 'index';
-	protected $_template = '/add.phtml';
+	protected $_template = '/order.phtml';
 	
 	/* Private Properties
 	-------------------------------*/
@@ -24,18 +24,10 @@ class Front_Page_Index extends Front_Page {
 	/* Public Methods
 	-------------------------------*/
 	public function render() {
-		if (!isset($_SESSION['admin'])){
-			header('Location:/login');
-		}
-		if (isset($_FILES['file'])){
-			move_uploaded_file($_FILES['file']['tmp_name'], dirname(__FILE__).'/../../web/images/'.$_FILES['file']['name']);
-		}
-		if (isset($_POST['name'])){
-			front()->products()->create($_POST['name'],$_POST['price'],'/images/'.$_FILES['file']['name'],$_POST['category']);
-		}
+		$orders = front()->orders()->getList();
+		$this->_body['orders'] = $orders;
 		return $this->_page();
-	}
-	
+	}	
 	/* Protected Methods
 	-------------------------------*/
 	/* Private Methods
